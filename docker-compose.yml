@@ -20,4 +20,4 @@ services:
     volumes:
       - ./storage:/storage
     environment:
-      PYTHONUNBUFFERED: '0'
+      - LOG_LEVEL=debug

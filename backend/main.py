@@ -14,6 +14,9 @@ import uvicorn
 from fastapi import File
 from fastapi import FastAPI
 from fastapi import UploadFile
+from fastapi.logger import logger
+# ... other imports
+import logging.config
 import numpy as np
 
 import config
@@ -21,7 +24,10 @@ import inference
 import os
 
 # Natural Language Processing Libraries
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.info("Starting server")
 
 app = FastAPI()
 
@@ -59,17 +65,17 @@ def get_text(url):
 
 @app.post("/{contentType}")
 async def get_summary(contentType: str, file: UploadFile = File(...)):
-    print(file.filename)
+    logger.info("file "+ file.filename)
     df = pd.read_excel(file.file.read(), index_col=None, header=None)
-    print(len(df))
+    logger.info(len(df))
     model_name = config.MODEL_NAMES[contentType]
     url = df.iat[1, 0]
-    print("url " + url)
+    logger.info("url " + url)
     article_text = get_text(url)
     start = time.time()
     summary = inference.inference(model_name, article_text)
     name = f"/storage/{str(uuid.uuid4())}.txt"
-    print(f"name: {name}")
+    logger.info(f"name: {name}")
     # file1 = open(name, "w+")
     with open(name, 'w+') as file1:
         for listItem in summary:
@@ -91,10 +97,12 @@ def generate_summary(model_name, name, df):
 
     for ind in range(len(df)):
         url = df.iat[ind, 0]
+        logger.info("url " + url)
         article_text = get_text(url)
         summary = inference.inference(model_name, article_text)
         name = name.split(".")[0]
         name = f"{name.split('_')[0]}_{ind}.txt"
+        logger.info("name " + name)
         with open(name, 'w+') as file1:
             for listItem in summary:
                 file1.write('%s\n' % listItem)

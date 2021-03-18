@@ -50,3 +50,13 @@ def inference(model_name, article_text):
     nested_summ = nest_sentences(' '.join(summarized_text))
     return generate_summary(tokenizer, model, nested_summ)
     #return nested
+
+# def inference(model_name, article_text):
+#     # tokenizer = BartTokenizer.from_pretrained(model_name)
+#     # model = BartForConditionalGeneration.from_pretrained(model_name)
+#     nested = nest_sentences(article_text)
+#
+#     # summarized_text = generate_summary(tokenizer, model, nested)
+#     # nested_summ = nest_sentences(' '.join(summarized_text))
+#     # return generate_summary(tokenizer, model, nested_summ)
+#     return nested
