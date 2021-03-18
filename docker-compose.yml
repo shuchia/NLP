@@ -1,0 +1,23 @@
+version: '3'
+
+
+services:
+
+  frontend:
+    build: frontend
+    ports:
+      - 8501:8501
+    depends_on:
+      - backend
+    volumes:
+        - ./storage:/storage
+    environment:
+      PYTHONUNBUFFERED: '1'
+  backend:
+    build: backend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./storage:/storage
+    environment:
+      PYTHONUNBUFFERED: '0'
