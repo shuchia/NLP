@@ -86,6 +86,7 @@ async def get_summary(contentType: str, file: UploadFile = File(...)):
 
 
 async def generate_remaining_summaries(model_name, name, sheet):
+    logger.info("model_name in async " + model_name)
     executor = ProcessPoolExecutor()
     event_loop = asyncio.get_event_loop()
     await event_loop.run_in_executor(
@@ -94,7 +95,7 @@ async def generate_remaining_summaries(model_name, name, sheet):
 
 
 def generate_summary(model_name, name, df):
-
+    logger.info("model_name in generate_summary " + model_name)
     for ind in range(len(df)):
         url = df.iat[ind, 0]
         logger.info("url " + url)
