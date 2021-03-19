@@ -9,6 +9,8 @@ nltk.download('punkt')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
 
 def nest_sentences(document):
     nested = []
@@ -46,9 +48,7 @@ def generate_summary(tokenizer, model, nested_sentences):
 
 
 def inference(model_name, article_text):
-    logger.info("Inside inference ")
-    tokenizer = BartTokenizer.from_pretrained(model_name)
-    model = BartForConditionalGeneration.from_pretrained(model_name)
+
     logger.info("Inside inference after model load")
     nested = nest_sentences(article_text)
 
