@@ -1,11 +1,14 @@
 from transformers import BartTokenizer, BartForConditionalGeneration
 import nltk
 import torch
+import logging.config
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 
 nltk.download('punkt')
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def nest_sentences(document):
     nested = []
@@ -27,6 +30,7 @@ def nest_sentences(document):
 
 
 def generate_summary(tokenizer, model, nested_sentences):
+    logger.info("Inside inference generate summary")
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     summaries = []
     for nested in nested_sentences:
@@ -42,8 +46,10 @@ def generate_summary(tokenizer, model, nested_sentences):
 
 
 def inference(model_name, article_text):
+    logger.info("Inside inference ")
     tokenizer = BartTokenizer.from_pretrained(model_name)
     model = BartForConditionalGeneration.from_pretrained(model_name)
+    logger.info("Inside inference after model load")
     nested = nest_sentences(article_text)
 
     summarized_text = generate_summary(tokenizer, model, nested)
