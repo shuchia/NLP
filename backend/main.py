@@ -20,7 +20,7 @@ import logging.config
 import numpy as np
 
 import config
-import inference
+from inference import NLP
 import os
 
 # Natural Language Processing Libraries
@@ -30,6 +30,7 @@ logger.setLevel(logging.INFO)
 logger.info("Starting server")
 
 app = FastAPI()
+nlp = NLP()
 
 
 @app.get("/")
@@ -65,7 +66,7 @@ def get_text(url):
 
 @app.post("/{contentType}")
 async def get_summary(contentType: str, file: UploadFile = File(...)):
-    logger.info("file "+ file.filename)
+    logger.info("file " + file.filename)
     df = pd.read_excel(file.file.read(), index_col=None, header=None)
     logger.info(len(df))
     model_name = config.MODEL_NAMES[contentType]
@@ -73,7 +74,7 @@ async def get_summary(contentType: str, file: UploadFile = File(...)):
     logger.info("url " + url)
     article_text = get_text(url)
     start = time.time()
-    summary = inference.inference(model_name, article_text)
+    summary = nlp.inference(model_name, article_text)
     name = f"/storage/{str(uuid.uuid4())}.txt"
     logger.info(f"name: {name}")
     # file1 = open(name, "w+")
@@ -100,7 +101,7 @@ def generate_summary(model_name, name, df):
         url = df.iat[ind, 0]
         logger.info("url " + url)
         article_text = get_text(url)
-        summary = inference.inference(model_name, article_text)
+        summary = nlp.inference(model_name, article_text)
         name = name.split(".")[0]
         name = f"{name.split('_')[0]}_{ind}.txt"
         logger.info("name " + name)
