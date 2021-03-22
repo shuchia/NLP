@@ -34,16 +34,17 @@ class NLP:
     def __init__(self):
         self.model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
         self.tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     def generate_summary(self, nested_sentences):
         logger.info("Inside inference before generate summary")
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
         summaries = []
         for nested in nested_sentences:
             input_tokenized = self.tokenizer.encode(' '.join(nested), truncation=True, return_tensors='pt')
-            input_tokenized = input_tokenized.to(device)
-            summary_ids = self.model.to(device).generate(input_tokenized,
-                                                         length_penalty=3.0)
+            input_tokenized = input_tokenized.to(self.device)
+            summary_ids = self.model.to(self.device).generate(input_tokenized,
+                                                              length_penalty=3.0)
             output = [self.tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in
                       summary_ids]
             summaries.append(output)
