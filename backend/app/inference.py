@@ -55,11 +55,12 @@ class NLP:
         return summaries
 
     def inference(self, model_name, article_text):
-        logger.info("Inside inference after model load")
+        logger.info("Inside inference after model load" + "logging nested")
         nested = nest_sentences(article_text)
-
+        logger.info(nested)
         summarized_text = self.generate_summary(nested)
         logger.info("Inside inference summarized text")
+        logger.info(summarized_text)
         nested_summ = nest_sentences(' '.join(summarized_text))
         return self.generate_summary(nested_summ)
     # return nested

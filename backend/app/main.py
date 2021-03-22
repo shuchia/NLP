@@ -101,6 +101,7 @@ def generate_summary(model_name, name, df):
         url = df.iat[ind, 0]
         logger.info("url " + url)
         article_text = get_text(url)
+        logger.info(article_text)
         summary = nlp.inference(model_name, article_text)
         name = name.split(".")[0]
         name = f"{name.split('_')[0]}_{ind}.txt"
