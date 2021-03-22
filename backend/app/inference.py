@@ -36,7 +36,7 @@ class NLP:
         self.tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
 
     def generate_summary(self, nested_sentences):
-        logger.info("Inside inference generate summary")
+        logger.info("Inside inference before generate summary")
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         summaries = []
         for nested in nested_sentences:
@@ -47,6 +47,9 @@ class NLP:
             output = [self.tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in
                       summary_ids]
             summaries.append(output)
+
+        logger.info("Inside inference after generate summary")
+
         summaries = [sentence for sublist in summaries for sentence in sublist]
         return summaries
 
@@ -55,6 +58,7 @@ class NLP:
         nested = nest_sentences(article_text)
 
         summarized_text = self.generate_summary(nested)
+        logger.info("Inside inference summarized text" + summarized_text)
         nested_summ = nest_sentences(' '.join(summarized_text))
         return self.generate_summary(nested_summ)
     # return nested
