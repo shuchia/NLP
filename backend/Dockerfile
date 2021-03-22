@@ -1,5 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn:python3.8
-
+COPY ./app /app
 WORKDIR /NLP
 
 RUN apt-get update
@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["python", "main.py"]
+CMD ["python", "app/main.py"]
