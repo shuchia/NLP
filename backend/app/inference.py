@@ -58,7 +58,7 @@ class NLP:
         nested = nest_sentences(article_text)
 
         summarized_text = self.generate_summary(nested)
-        logger.info("Inside inference summarized text" + summarized_text)
+        logger.info("Inside inference summarized text")
         nested_summ = nest_sentences(' '.join(summarized_text))
         return self.generate_summary(nested_summ)
     # return nested
