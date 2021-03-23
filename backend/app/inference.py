@@ -1,4 +1,4 @@
-from transformers import BartTokenizer, BartForConditionalGeneration
+from transformers import AutoTokenizer, AutoModel
 import nltk
 import torch
 import logging.config
@@ -34,9 +34,9 @@ def nest_sentences(document):
 class NLP:
     def __init__(self):
         self.cache_dir = config.MODEL_PATH + "facebook/bart-large-cnn"
-        self.model = BartForConditionalGeneration.from_pretrained(self.cache_dir,
-                                                                  local_files_only=True)
-        self.tokenizer = BartTokenizer.from_pretrained(self.cache_dir, local_files_only=True)
+        self.model = AutoModel.from_pretrained(self.cache_dir,
+                                               local_files_only=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.cache_dir, local_files_only=True)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     def generate_summary(self, nested_sentences):
