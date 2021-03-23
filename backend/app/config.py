@@ -1,4 +1,4 @@
-MODEL_PATH = "../models/"
+MODEL_PATH = "./models/"
 
 MODEL_NAMES = {
     "bart-large-cnn": "facebook/bart-large-cnn",
