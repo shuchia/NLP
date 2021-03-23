@@ -2,6 +2,7 @@ from transformers import BartTokenizer, BartForConditionalGeneration
 import nltk
 import torch
 import logging.config
+import config
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 
@@ -32,8 +33,10 @@ def nest_sentences(document):
 
 class NLP:
     def __init__(self):
-        self.model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
-        self.tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+        self.cache_dir = config.MODEL_PATH + "facebook/bart-large-cnn"
+        self.model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn", self.cache_dir,
+                                                                  local_files_only=True)
+        self.tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn", self.cache_dir, local_files_only=True)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     def generate_summary(self, nested_sentences):
