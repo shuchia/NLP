@@ -36,8 +36,8 @@ class NLP:
     def __init__(self):
         self.cache_dir = os.environ["MODEL_DIR"] + "facebook/bart-large-cnn"
         self.model = BartForConditionalGeneration.from_pretrained(self.cache_dir,
-                                                                  output_past=True)
-        self.tokenizer = BartTokenizer.from_pretrained(self.cache_dir, output_past=True)
+                                                                  local_files_only=True)
+        self.tokenizer = BartTokenizer.from_pretrained(self.cache_dir, local_files_only=True)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     def generate_summary(self, nested_sentences):
