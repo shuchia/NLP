@@ -2,6 +2,8 @@ FROM tiangolo/uvicorn-gunicorn:python3.8
 COPY ./app /app
 WORKDIR /NLP
 
+ENV MODEL_DIR=/home/ubuntu/NLP/backend/models/
+
 RUN apt-get update
 RUN apt-get install 'ffmpeg'\
     'libsm6'\
