@@ -30,7 +30,7 @@ if __name__ != "main":
     logger.setLevel(gunicorn_logger.level)
 else:
     logger.setLevel(logging.DEBUG)
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
 logger.info("Starting server")
 
 app = FastAPI()
