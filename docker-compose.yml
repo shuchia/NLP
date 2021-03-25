@@ -20,4 +20,4 @@ services:
     volumes:
       - ./storage:/storage
     environment:
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info
