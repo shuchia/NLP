@@ -24,8 +24,12 @@ from inference import NLP
 import os
 
 # Natural Language Processing Libraries
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+gunicorn_logger = logging.getLogger('gunicorn.error')
+logger.handlers = gunicorn_logger.handlers
+if __name__ != "main":
+    logger.setLevel(gunicorn_logger.level)
+else:
+    logger.setLevel(logging.DEBUG)
 logger.setLevel(logging.INFO)
 logger.info("Starting server")
 
