@@ -1,7 +1,7 @@
 import asyncio
 import time
 import uuid
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures.process import ProcessPoolExecutor
 from functools import partial
 
 # Webscrapping using BeautifulSoup, not yet implemented
@@ -90,7 +90,7 @@ async def generate_remaining_summaries(model_name, name, sheet):
     logger.info("model_name in async " + model_name)
     executor = ProcessPoolExecutor()
     event_loop = asyncio.get_event_loop()
-    await event_loop.run_in_executor(
+    return await event_loop.run_in_executor(
         executor, partial(generate_summary, model_name, name, sheet)
     )
 
@@ -109,6 +109,7 @@ def generate_summary(model_name, name, df):
         with open(name, 'w+') as file1:
             for listItem in summary:
                 file1.write('%s\n' % listItem)
+        return {"url": url, "name": name, "time": time.time()}
 
 
 if __name__ == "__main__":

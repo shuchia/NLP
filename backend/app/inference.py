@@ -1,5 +1,5 @@
 import transformers
-from transformers import BartTokenizer, BartForConditionalGeneration, BartConfig
+from transformers import BartTokenizer, BartForConditionalGeneration
 import nltk
 import torch
 import logging.config
@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 transformers.logging.set_verbosity_info()
+
 
 def nest_sentences(document):
     nested = []
